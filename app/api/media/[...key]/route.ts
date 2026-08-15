@@ -1,0 +1,3 @@
+import { env } from "cloudflare:workers";
+type RuntimeEnv={MEDIA?:R2Bucket};type Context={params:Promise<{key:string[]}>};
+export async function GET(_:Request,{params}:Context){const bucket=(env as unknown as RuntimeEnv).MEDIA;if(!bucket)return new Response("Not found",{status:404});const {key}=await params;const object=await bucket.get(key.join("/"));if(!object)return new Response("Not found",{status:404});const headers=new Headers();object.writeHttpMetadata(headers);headers.set("etag",object.httpEtag);headers.set("x-content-type-options","nosniff");return new Response(object.body,{headers});}
