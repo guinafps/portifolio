@@ -1171,3 +1171,17 @@ html[data-theme="light"] .next-project{background:radial-gradient(circle at 78% 
   .gallery-upload-grid{grid-template-columns:repeat(3,1fr)}.gallery-upload-grid>div{height:82px}
 }
 @media(prefers-reduced-motion:reduce){.theme-cinematic-orbits{animation-duration:20s!important}.cursor-ring{transition:opacity .15s!important}}
+
+/* Keep portfolio screenshots fully visible, regardless of their aspect ratio. */
+.project-visual > img,
+.gallery-frame > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  background: #050506;
+}
+
+.project-visual:hover > img {
+  transform: none;
+}
