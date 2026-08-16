@@ -18,9 +18,10 @@ export function ContactForm() {
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const formElement = event.currentTarget;
     setState("sending");
     setMessage("");
-    const form = new FormData(event.currentTarget);
+    const form = new FormData(formElement);
     const payload = Object.fromEntries(form.entries());
     try {
       const response = await fetch("/api/contact", {
@@ -33,7 +34,7 @@ export function ContactForm() {
       setState("sent");
       setMessage(data.message || t("form.success"));
       setActiveField(4);
-      event.currentTarget.reset();
+      formElement.reset();
     } catch (error) {
       setState("error");
       setMessage(error instanceof Error ? error.message : t("form.retry"));
@@ -120,3 +121,4 @@ export function ContactForm() {
     </motion.form>
   );
 }
+

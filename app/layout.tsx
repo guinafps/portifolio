@@ -19,12 +19,28 @@ export async function generateMetadata(): Promise<Metadata> {
     title: { default: title, template: "%s | Joao Pedro dos Santos" },
     description,
     alternates: { canonical: "/" },
-    icons: { icon: [{ url: "/jp-monogram.png?v=3", type: "image/png" }], shortcut: "/jp-monogram.png?v=3", apple: "/jp-monogram.png?v=3" },
+    icons: {
+      icon: [{ url: "/favicon-jp.png?v=20260816", type: "image/png" }],
+      shortcut: "/favicon-jp.png?v=20260816",
+      apple: "/favicon-jp.png?v=20260816",
+    },
     openGraph: { title, description, type: "website", locale: "pt_BR", url: base, siteName: "Joao Pedro dos Santos" },
     twitter: { card: "summary", title, description },
   };
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="pt-BR" data-theme="dark" suppressHydrationWarning><body className={`${geist.variable} ${mono.variable}`}><PreferencesProvider>{children}</PreferencesProvider></body></html>;
+  return (
+    <html lang="pt-BR" data-theme="dark" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/favicon-jp.png?v=20260816" type="image/png" />
+        <link rel="shortcut icon" href="/favicon-jp.png?v=20260816" type="image/png" />
+        <link rel="apple-touch-icon" href="/favicon-jp.png?v=20260816" />
+      </head>
+      <body className={`${geist.variable} ${mono.variable}`}>
+        <PreferencesProvider>{children}</PreferencesProvider>
+      </body>
+    </html>
+  );
 }
+
