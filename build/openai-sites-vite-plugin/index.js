@@ -1,1 +1,1 @@
-export { sites } from "../sites-vite-plugin.ts";
+export { sites } from "./sites-vite-plugin.js";
