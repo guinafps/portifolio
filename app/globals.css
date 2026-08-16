@@ -1185,3 +1185,42 @@ html[data-theme="light"] .next-project{background:radial-gradient(circle at 78% 
 .project-visual:hover > img {
   transform: none;
 }
+
+/* Keep portrait labels readable and project cards aligned. */
+.noir-photo-label.top {
+  left: 18px;
+  top: 24px;
+}
+
+.noir-photo-label.bottom {
+  right: 18px;
+  bottom: 24px;
+}
+
+.noir-skill.skill-a {
+  left: 18px;
+  bottom: 24%;
+}
+
+.noir-skill.skill-b {
+  right: 18px;
+  top: 27%;
+}
+
+.noir-skill.skill-c {
+  right: 18px;
+  top: 11%;
+}
+
+.noir-monogram {
+  left: 18px;
+  bottom: 12px;
+}
+
+.project-grid-editorial {
+  align-items: start;
+}
+
+.project-tile:nth-child(even) {
+  margin-top: 0;
+}
