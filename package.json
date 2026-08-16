@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "vinext dev",
-    "build": "node --trace-uncaught node_modules/vinext/dist/cli.js build --verbose",
+    "build": "node --trace-uncaught node_modules/vinext/dist/cli.js build --verbose && node build/vercel-output.mjs",
     "start": "vinext start",
     "test": "npm run build && node --test tests/rendered-html.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
