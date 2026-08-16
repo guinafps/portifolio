@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/safe-link";
 import { ArrowUpRight } from "lucide-react";
 
 export default function NotFound() {

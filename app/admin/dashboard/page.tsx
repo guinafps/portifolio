@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/safe-link";
 import { ArrowRight, ArrowUpRight, FileText, FolderKanban, Mail, Plus, Star } from "lucide-react";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { getAllProjects, getDashboardStats } from "@/lib/data";

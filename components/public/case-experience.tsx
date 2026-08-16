@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/ui/safe-link";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
 import type { Project } from "@/lib/portfolio";

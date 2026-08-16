@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/ui/safe-link";
 import { ArrowUpRight } from "lucide-react";
 import { AnimatedPageHero } from "@/components/public/animated-page-hero";
 import { ProjectsIndex } from "@/components/public/projects-index";

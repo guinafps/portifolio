@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/ui/safe-link";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import type { Project, SiteSettings } from "@/lib/portfolio";

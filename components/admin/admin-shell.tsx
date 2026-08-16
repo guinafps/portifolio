@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/ui/safe-link";
 import { usePathname } from "next/navigation";
 import { ExternalLink, FolderKanban, LayoutDashboard, LogOut, Mail, Settings } from "lucide-react";
 import type { AdminUser } from "@/lib/admin-auth";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import Link from "@/components/ui/safe-link";
 import { ArrowUpRight, Check, ChevronDown, ChevronUp, Languages, Menu, Moon, Sun, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type { SiteSettings } from "@/lib/portfolio";
