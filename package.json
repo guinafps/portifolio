@@ -15,6 +15,7 @@
     "db:generate": "drizzle-kit generate"
   },
   "dependencies": {
+    "@vercel/blob": "2.6.1",
     "drizzle-orm": "0.45.2",
     "lucide-react": "0.468.0",
     "motion": "12.23.12",
@@ -49,4 +50,3 @@
   },
   "type": "module"
 }
-

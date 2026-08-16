@@ -3,6 +3,7 @@ import { and, eq, gte, sql } from "drizzle-orm";
 import { getReadyDb } from "@/db";
 import { contactMessages } from "@/db/schema";
 import { cleanText, contactSchema } from "@/lib/validation";
+import { isBlobStoreConfigured, mutatePortfolioState } from "@/lib/blob-store";
 
 type RuntimeEnv = {
   RESEND_API_KEY?: string;
@@ -45,18 +46,31 @@ export async function POST(request: Request) {
       Object.entries(parsed.data).map(([key, value]) => [key, cleanText(value)]),
     ) as typeof parsed.data;
 
-    const db = await getReadyDb();
-    const cutoff = sqliteDate(new Date(Date.now() - 10 * 60 * 1000));
-    const [recent] = await db
-      .select({ count: sql<number>`count(*)` })
-      .from(contactMessages)
-      .where(and(eq(contactMessages.email, data.email), gte(contactMessages.createdAt, cutoff)));
+    if (isBlobStoreConfigured()) {
+      const stored = await mutatePortfolioState((state) => {
+        const cutoff = Date.now() - 10 * 60 * 1000;
+        const recent = state.messages.filter((message) => message.email === data.email && new Date(message.createdAt).getTime() >= cutoff);
+        if (recent.length >= 3) return false;
+        state.messages.push({ id: state.nextMessageId, ...data, status: "new", createdAt: new Date().toISOString() });
+        state.nextMessageId += 1;
+        return true;
+      });
+      if (!stored) {
+        return Response.json({ error: "Você enviou algumas mensagens em sequência. Aguarde dez minutos." }, { status: 429 });
+      }
+    } else {
+      const db = await getReadyDb();
+      const cutoff = sqliteDate(new Date(Date.now() - 10 * 60 * 1000));
+      const [recent] = await db
+        .select({ count: sql<number>`count(*)` })
+        .from(contactMessages)
+        .where(and(eq(contactMessages.email, data.email), gte(contactMessages.createdAt, cutoff)));
 
-    if (Number(recent.count) >= 3) {
-      return Response.json({ error: "Você enviou algumas mensagens em sequência. Aguarde dez minutos." }, { status: 429 });
+      if (Number(recent.count) >= 3) {
+        return Response.json({ error: "Você enviou algumas mensagens em sequência. Aguarde dez minutos." }, { status: 429 });
+      }
+      await db.insert(contactMessages).values(data);
     }
-
-    await db.insert(contactMessages).values(data);
     try {
       await sendNotification(data);
     } catch (error) {

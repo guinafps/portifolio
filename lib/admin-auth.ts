@@ -22,10 +22,11 @@ export type AdminUser = {
 
 function config() {
   const runtime = env as unknown as RuntimeEnv;
+  const processRuntime = typeof process !== "undefined" ? process.env : undefined;
   return {
-    username: runtime.ADMIN_USERNAME?.trim() || "",
-    passwordHash: runtime.ADMIN_PASSWORD_HASH?.trim() || "",
-    sessionSecret: runtime.ADMIN_SESSION_SECRET?.trim() || "",
+    username: processRuntime?.ADMIN_USERNAME?.trim() || runtime.ADMIN_USERNAME?.trim() || "",
+    passwordHash: processRuntime?.ADMIN_PASSWORD_HASH?.trim() || runtime.ADMIN_PASSWORD_HASH?.trim() || "",
+    sessionSecret: processRuntime?.ADMIN_SESSION_SECRET?.trim() || runtime.ADMIN_SESSION_SECRET?.trim() || "",
   };
 }
 

@@ -155,7 +155,7 @@ export function ProjectForm({ project }: { project?: Project }) {
         <section className="admin-card">
           <h3>Imagem de capa</h3>
           <label className={`upload-box ${values.coverImage ? "has-image" : ""}`}>
-            {values.coverImage ? <><img src={values.coverImage} alt="Prévia da capa" /><button type="button" onClick={(event) => { event.preventDefault(); update("coverImage", ""); }} aria-label="Remover imagem"><X size={15} /></button></> : <><ImagePlus /><b>{uploadingCover ? "Enviando..." : "Escolher imagem"}</b><small>JPG, PNG ou WebP · até 6 MB</small></>}
+            {values.coverImage ? <><img src={values.coverImage} alt="Prévia da capa" /><button type="button" onClick={(event) => { event.preventDefault(); update("coverImage", ""); }} aria-label="Remover imagem"><X size={15} /></button></> : <><ImagePlus /><b>{uploadingCover ? "Enviando..." : "Escolher imagem"}</b><small>JPG, PNG ou WebP · até 4 MB</small></>}
             <input aria-label="Escolher imagem de capa" type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => uploadCover(event.target.files?.[0])} disabled={uploadingCover} />
           </label>
         </section>
