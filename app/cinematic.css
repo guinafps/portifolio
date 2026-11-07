@@ -97,7 +97,12 @@ html.jp-intro-lock { overflow:hidden; }
 .jp-intro-track i { display:block; height:100%; width:100%; background:#fff; transform-origin:left; box-shadow:0 0 12px #2a9be23a; }
 .jp-intro-skip { position:absolute; bottom:4%; left:50%; transform:translateX(-50%); background:none; border:0; padding:12px 18px; min-height:44px; color:#a6b2bd; font:400 11px var(--font-manrope),sans-serif; cursor:pointer; pointer-events:auto; }
 .jp-intro-skip:hover { color:#fff; }
+.jp-intro-motion-choice { position:absolute; bottom:3%; right:28px; display:flex; flex-direction:column; gap:4px; max-width:240px; color:#a6b2bd; font:400 11px/1.5 var(--font-manrope),sans-serif; pointer-events:auto; }
+.jp-intro-motion-choice button { color:#fff; background:#ffffff0d; border:1px solid #ffffff3a; border-radius:100px; padding:11px 17px; min-height:44px; cursor:pointer; }
+.jp-intro-replay { display:flex; align-items:center; gap:8px; color:#b8c9d6; background:none; border:0; min-height:44px; padding:12px 0; margin-top:4px; font:400 11px/1.4 var(--font-manrope),sans-serif; cursor:pointer; }
+.jp-intro-replay:hover { color:#fff; }
 .jp-reference[data-intro-stage="transfer"] .jp-portrait img { visibility:hidden; }
+html[data-intro-motion="reduced"] .jp-reference[data-intro-stage="transfer"] .jp-portrait img { visibility:visible; }
 .jp-reference[data-intro-stage="loading"] :is(.jp-hero-intro,.jp-hero-signature) { opacity:0; }
 .jp-reference[data-intro-stage="transfer"] :is(.jp-hero-intro,.jp-hero-signature) { animation:jpTextArrives .9s .65s both; }
 @keyframes jpTextArrives { from { opacity:0; clip-path:inset(0 0 100% 0); translate:0 14px; } to { opacity:1; clip-path:inset(0); translate:0 0; } }
@@ -128,6 +133,9 @@ html.jp-intro-lock { overflow:hidden; }
   .jp-intro-name { top:11%; }
   .jp-intro-meter { bottom:18%; }
   .jp-intro-skip { bottom:8%; }
+  .jp-intro-motion-choice { right:auto; left:50%; bottom:1%; transform:translateX(-50%); width:max-content; text-align:center; font-size:10px; }
+  .jp-intro:has(.jp-intro-motion-choice) .jp-intro-skip { bottom:11%; }
+  .jp-intro-replay { margin:4px auto 0; }
   .site .site-preferences { margin-left:auto; }
   .site .animated-page-hero { padding-top:125px; padding-bottom:42px; }
   .site .animated-page-hero>h1 { margin-top:30px; }

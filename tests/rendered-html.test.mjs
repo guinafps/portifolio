@@ -101,6 +101,11 @@ test("new opening uses the formal portrait, resource readiness and a measured tr
   assert.match(intro, /Escape/);
   assert.match(intro, /await travel.finished/);
   assert.match(intro, /duration: 1.45/);
+  assert.doesNotMatch(intro, /if \(reduced \|\||window.scrollY > 50|motion-preview/);
+  assert.match(intro, /jp-intro-full-motion/);
+  assert.match(intro, /await dissolve.finished/);
+  assert.match(intro, /navigation\?\.type === "back_forward"/);
+  assert.match(home, /Rever abertura completa/);
   assert.match(scroll, /syncTouch: false/);
   assert.match(scroll, /lenis.destroy\(\)/);
   assert.match(css, /backdrop-filter:blur/);
