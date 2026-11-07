@@ -1,0 +1,149 @@
+/* Black / white / ice blue. Glass is deliberately limited to controls and bars. */
+html { scrollbar-gutter:stable; }
+html.lenis { scroll-behavior:auto; }
+:root, html[data-theme="dark"] {
+  --bg:#03080f; --surface:#080e17; --card:#101824; --ink:#fff; --muted:#9ea9b8;
+  --accent:#82c5f0; --accent-blue:#2a9be2; --accent-violet:#2a9be2; --accent-pink:#82c5f0;
+  --noir:#03080f; --noir-2:#080e17; --noir-3:#101824; --noir-4:#152436;
+  --noir-red:#2a9be2; --noir-red-2:#82c5f0; --noir-wine:#0b2b43;
+}
+.jp-reference { --jp-dark:#03080f; --jp-light:#fff; --jp-text:#fff; --jp-muted:#a5adb8; }
+.jp-reference .jp-accent { color:#157ebc; }
+.jp-hero { height:100svh; max-height:1000px; min-height:720px; background:#01060c; border-radius:0 0 22px 22px; }
+.jp-hero-atmosphere { background:radial-gradient(ellipse at 50% 67%,#249ceba8 0%,#1371a943 29%,transparent 64%),radial-gradient(ellipse at 14% 68%,#06345178,transparent 53%),#01060c; }
+.jp-hero-atmosphere::after { content:""; position:absolute; inset:0; opacity:.06; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' opacity='.5' d='M0 0h180v180H0z'/%3E%3C/svg%3E"); pointer-events:none; }
+.jp-portrait { top:-25px; width:min(76vw,920px); margin-left:max(-38vw,-460px); }
+.jp-portrait img,.jp-intro-portrait { filter:brightness(.86) saturate(.75) contrast(1.04); }
+.jp-hero-shade { background:linear-gradient(0deg,#01060cf5,transparent 42%),linear-gradient(90deg,#01060c75,transparent 35%,transparent 70%,#01060c75); }
+.jp-hero-intro { top:17%; width:min(34%,400px); }
+.jp-hero .jp-hero-identity { font-size:11px; color:#b8d5e7; margin-bottom:14px; }
+.jp-hero h1 { font-size:clamp(27px,2.15vw,33px); line-height:1.03; letter-spacing:-.045em; }
+.jp-hero .jp-hero-description { max-width:285px; font-size:13px; line-height:1.5; margin-top:20px; }
+.jp-hero-signature { bottom:9%; }
+.jp-hero-signature h2 { font-size:clamp(50px,5.35vw,80px); line-height:.92; font-weight:400; }
+.jp-hero-signature p { line-height:1.4; }
+.jp-action { color:#0a0f1e; background:linear-gradient(135deg,#fffffff2,#f5faffd9); border:1px solid #fff; box-shadow:inset 0 1px 0 #fff,0 3px 14px #00000012; }
+.jp-action>span { background:#2a9be2; color:#fff; box-shadow:inset 0 1px 1px #ffffff75; }
+.jp-action:hover { background:#fff; box-shadow:0 0 0 5px #ffffff15; }
+.jp-action-dark { color:#fff; background:linear-gradient(135deg,#1b2431,#03080ff0); border-color:#314355; }
+.jp-action-dark:hover { background:#132737; border-color:#41718e; box-shadow:0 0 0 5px #2a9be214; }
+.jp-action,.jp-outline-action { position:relative; overflow:hidden; -webkit-backdrop-filter:blur(18px) saturate(135%); backdrop-filter:blur(18px) saturate(135%); }
+.jp-action::before,.jp-outline-action::before { content:""; position:absolute; inset:-60% auto -60% -80%; width:40%; pointer-events:none; background:linear-gradient(90deg,transparent,#ffffff40,transparent); transform:skew(-25deg); transition:left .65s ease; }
+.jp-action:hover::before,.jp-outline-action:hover::before { left:140%; }
+.jp-outline-action { background:linear-gradient(140deg,#ffffff0d,#ffffff03); border-color:#ffffff5a; box-shadow:inset 0 1px 0 #ffffff15; }
+.jp-showcase { background:#000; }
+.jp-showcase-device { background:#080d14; border-color:#ffffff35; box-shadow:0 0 0 5px #ffffff04,0 30px 100px #2a9be226; will-change:transform; }
+.jp-showcase-glow { background:radial-gradient(ellipse,#14659b4d,transparent 65%); }
+.jp-differences { background:#000; }
+.jp-difference-grid article { border-color:#34556c; background:radial-gradient(ellipse at 50% 115%,#0b426e96,transparent 70%),#01070c; }
+.jp-planet { background:radial-gradient(ellipse at 50% 0%,#2a9be270,transparent 37%),#02050a; border-color:#aad9f5; box-shadow:0 -9px 30px #2a9be233,inset 0 15px 30px #147aba33; }
+.jp-planet-1 { border-color:#2a9be2; }
+.jp-planet-2 { border-color:#dceefa; }
+.jp-project-card { background:#f7f9fb; border-color:#d5d9de; }
+.jp-project-card:hover { border-color:#2a9be2; box-shadow:0 8px 28px #0c2c4010; }
+.jp-project-meta h3 { font-size:16px; font-weight:500; }
+.jp-projects-end { margin-top:38px; }
+.jp-contact-brand>div { background:radial-gradient(ellipse at 50% 0%,#2a9be255,transparent 60%),#03080f; }
+.jp-service-grid .nova-service-icon { color:#147bb8; }
+.site .site-logo-image,.jp-orbit-logo img,.jp-contact-brand img { filter:grayscale(1) brightness(2); }
+.jp-orbit-art>i { border-color:#2a9be233; }
+.jp-orbit-logo { background:#061321; }
+.jp-orbit-node { color:#147bb8; background:#f7f9fb; }
+.site .site-nav,.site:has(.jp-reference) .site-nav.is-scrolled { background:linear-gradient(130deg,#ffffff12,#07111be8); border:1px solid #ffffff2b; box-shadow:inset 0 1px 0 #ffffff14,0 8px 30px #0000000d; -webkit-backdrop-filter:blur(22px) saturate(140%); backdrop-filter:blur(22px) saturate(140%); }
+.site:has(.jp-reference) .site-nav:not(.is-scrolled) { background:transparent; box-shadow:none; border-color:transparent; backdrop-filter:none; }
+.site:has(.jp-reference) .desktop-nav>a:not(.nav-cta) { background:transparent; border-color:transparent; }
+.site:has(.jp-reference) .desktop-nav>a:not(.nav-cta):hover { background:#ffffff16; border-color:#ffffff30; backdrop-filter:blur(16px); }
+.site:has(.jp-reference) .menu-button { display:grid; place-items:center; width:46px; height:44px; }
+.site .site-preferences { border-radius:100px; border:1px solid #ffffff26; background:#ffffff07; backdrop-filter:blur(20px); padding:0 6px; }
+.site .language-menu { background:#0b1522f2; backdrop-filter:blur(22px); border-color:#ffffff30; }
+.site .language-menu button.active,.site .language-menu button:hover { background:#2a9be22b; color:#fff; }
+.site .mobile-menu { background:#03080ff5; }
+.site .mobile-menu a span { color:#82c5f0; }
+.site .mobile-menu .mobile-contact-link { color:#fff!important; border-color:#ffffff35!important; background:#ffffff09; backdrop-filter:blur(16px); }
+.site .site-footer,.site:has(.jp-reference) .site-footer { background:#000; }
+.site .inner-hero-action,.site .form-submit button { background:linear-gradient(135deg,#359edf,#146d9ff0)!important; border-color:#62b5e4!important; color:#fff!important; backdrop-filter:blur(16px); box-shadow:inset 0 1px 0 #ffffff30; }
+.site .inner-hero-action svg { color:#fff; }
+.site .form-submit button:hover { box-shadow:0 9px 30px #2a9be22b; }
+.site .project-filters button.active { background:#147bb8; border-color:#147bb8; }
+.site .project-filters button.active i { background:#147bb8; }
+.site .animated-page-hero { min-height:0; }
+.site .animated-page-hero>h1 { margin-top:30px; }
+.site .inner-hero-foot { margin-top:38px; }
+.site .about-profile-image { background:radial-gradient(ellipse at 50% 50%,#2a9be244,transparent 70%),#03080f; }
+.site .about-profile-image::after { background:linear-gradient(0deg,#03080f,transparent 60%); }
+.site .about-stack-rail { background:#03080f; color:#fff; border-color:#ffffff20; }
+.site .principle:hover { background:#2a9be20a; }
+.site .principle>span,.site .principle i { color:#82c5f0; }
+.scroll-progress { background:#2a9be2; }
+.pointer-light { background:radial-gradient(circle,#2a9be212,transparent 65%); }
+.cursor-ring { border-color:#b4d8ed; box-shadow:0 0 20px #2a9be219; }
+.cursor-ring::before,.cursor-ring::after { background:#82c5f0; }
+.cursor-live-dot { background:#fff; border-color:#2a9be2; box-shadow:0 0 10px #2a9be299; }
+.jp-reference :is(a,button):focus-visible,.site :is(a,button):focus-visible { outline-color:#2a9be2; }
+
+/* Loading is preparation plus an actual FLIP transfer, not a second decorative photo. */
+html.jp-intro-lock { overflow:hidden; }
+.jp-intro { position:fixed; z-index:12000; inset:0; overflow:clip; color:#fff; isolation:isolate; }
+.jp-intro-backdrop { position:absolute; inset:0; background:#000; z-index:-1; }
+.jp-intro-labels { position:absolute; inset:0; z-index:2; pointer-events:none; }
+.jp-intro-name { position:absolute; top:8%; left:0; width:100%; text-align:center; font:500 clamp(20px,2.2vw,33px)/1.1 var(--font-manrope),sans-serif; letter-spacing:.08em; margin:0; }
+.jp-intro-name span { display:block; font-size:10px; font-weight:400; letter-spacing:.42em; margin:12px 0 0 5px; color:#92a2b1; }
+.jp-intro-portrait { position:fixed; max-width:none; object-fit:contain; transform-origin:top left; opacity:0; transition:opacity .55s; will-change:transform; pointer-events:none; }
+.jp-intro-portrait.is-ready { opacity:1; }
+.jp-intro-meter { position:absolute; bottom:13%; width:min(290px,74%); left:50%; transform:translateX(-50%); }
+.jp-intro-meter-label { display:flex; justify-content:space-between; gap:12px; font:400 11px/1.5 var(--font-manrope),sans-serif; color:#a6b2bd; }
+.jp-intro-meter-label>span:last-child { font-variant-numeric:tabular-nums; color:#fff; }
+.jp-intro-track { height:2px; margin-top:14px; background:#ffffff22; }
+.jp-intro-track i { display:block; height:100%; width:100%; background:#fff; transform-origin:left; box-shadow:0 0 12px #2a9be23a; }
+.jp-intro-skip { position:absolute; bottom:4%; left:50%; transform:translateX(-50%); background:none; border:0; padding:12px 18px; min-height:44px; color:#a6b2bd; font:400 11px var(--font-manrope),sans-serif; cursor:pointer; pointer-events:auto; }
+.jp-intro-skip:hover { color:#fff; }
+.jp-reference[data-intro-stage="transfer"] .jp-portrait img { visibility:hidden; }
+.jp-reference[data-intro-stage="loading"] :is(.jp-hero-intro,.jp-hero-signature) { opacity:0; }
+.jp-reference[data-intro-stage="transfer"] :is(.jp-hero-intro,.jp-hero-signature) { animation:jpTextArrives .9s .65s both; }
+@keyframes jpTextArrives { from { opacity:0; clip-path:inset(0 0 100% 0); translate:0 14px; } to { opacity:1; clip-path:inset(0); translate:0 0; } }
+.jp-hero-intro,.jp-hero-signature { animation:none; }
+
+/* Scroll choreography: typography stays still; media carries the depth. */
+@supports(animation-timeline:view()) {
+  @media(prefers-reduced-motion:no-preference) {
+    .jp-project-card { animation:jpProjectArrives linear both; animation-timeline:view(); animation-range:entry 0% entry 80%; }
+    .jp-project-card:nth-child(even) { --entry-x:24px; }
+    .jp-project-card:nth-child(odd) { --entry-x:-24px; }
+    .jp-difference-grid article .jp-planet { animation:jpHorizon linear both; animation-timeline:view(); animation-range:entry 0% cover 45%; }
+    .jp-orbit-art>i { animation:jpOrbitExpand linear both; animation-timeline:view(); animation-range:entry 0% entry 100%; }
+    @keyframes jpProjectArrives { from { translate:var(--entry-x) 0; opacity:.35; scale:.97; } to { translate:0 0; opacity:1; scale:1; } }
+    @keyframes jpHorizon { from { translate:0 70px; } to { translate:0 0; } }
+    @keyframes jpOrbitExpand { from { scale:.7; opacity:.2; } to { scale:1; opacity:1; } }
+  }
+}
+@media(max-width:1100px) { .jp-portrait { top:-25px; } }
+@media(max-width:760px) {
+  .jp-hero { height:820px; min-height:0; max-height:none; }
+  .jp-portrait { top:20px; width:640px; margin-left:-320px; }
+  .jp-hero-intro { top:auto; bottom:38px; width:calc(100% - 40px); }
+  .jp-hero h1 { font-size:clamp(24px,6.5vw,36px); line-height:1.06; }
+  .jp-hero .jp-hero-description { max-width:330px; font-size:12px; line-height:1.6; }
+  .jp-hero-shade { background:linear-gradient(0deg,#01060c 0%,#01060cef 23%,#01060c33 53%,transparent 73%); }
+  .jp-hero .jp-hero-identity { font-size:10px; }
+  .jp-intro-name { top:11%; }
+  .jp-intro-meter { bottom:18%; }
+  .jp-intro-skip { bottom:8%; }
+  .site .site-preferences { margin-left:auto; }
+  .site .animated-page-hero { padding-top:125px; padding-bottom:42px; }
+  .site .animated-page-hero>h1 { margin-top:30px; }
+  .site .inner-hero-foot { margin-top:30px; }
+  .jp-project-card { --entry-x:0!important; }
+}
+@media(max-width:380px) {
+  .jp-hero { height:830px; }
+  .jp-hero h1 { font-size:22px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .jp-showcase-device { transform:none!important; will-change:auto; }
+  .jp-reference[data-intro-stage="transfer"] :is(.jp-hero-intro,.jp-hero-signature) { animation:none; opacity:1; }
+  .jp-action::before,.jp-outline-action::before { display:none; }
+}
+@supports not (backdrop-filter:blur(1px)) {
+  .site .site-nav.is-scrolled,.site .language-menu { background:#0a1420; }
+  .jp-outline-action { background:#112435; }
+}

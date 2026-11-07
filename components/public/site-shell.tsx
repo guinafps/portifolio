@@ -2,16 +2,17 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "@/components/ui/safe-link";
-import { ArrowUpRight, Check, ChevronDown, ChevronUp, Languages, Menu, Moon, Sun, X } from "lucide-react";
+import { ArrowUpRight, Check, ChevronDown, ChevronUp, Languages, Menu, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type { SiteSettings } from "@/lib/portfolio";
-import { usePreferences, type Locale, type Theme } from "./preferences";
+import { usePreferences, type Locale } from "./preferences";
+import { SmoothScroll } from "./smooth-scroll";
 
 const links = [
-  { href: "/#sobre", label: "nav.about" },
-  { href: "/projects", label: "nav.projects" },
-  { href: "/#experiencia", label: "nav.experience" },
-  { href: "/contact", label: "nav.contact" },
+  { href: "/#inicio", label: "nav.home" },
+  { href: "/#projetos", label: "nav.projects" },
+  { href: "/#experiencia", label: "nav.delivery" },
+  { href: "/#diferenciais", label: "nav.differences" },
 ];
 
 const languages: { value: Locale; short: string; label: string }[] = [
@@ -39,7 +40,7 @@ function CursorExperience() {
     const ring = ringRef.current;
     const dot = dotRef.current;
     const finePointer = window.matchMedia("(pointer: fine)").matches;
-    if (!canvas || !ring || !dot || !finePointer) return;
+    if (!canvas || !ring || !dot || !finePointer || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const context = canvas.getContext("2d");
     if (!context) return;
@@ -126,8 +127,8 @@ function CursorExperience() {
       context.clearRect(0, 0, window.innerWidth, window.innerHeight);
       if (visible) {
         const tether = context.createLinearGradient(follower.x, follower.y, target.x, target.y);
-        tether.addColorStop(0, "rgba(143, 29, 44, 0)");
-        tether.addColorStop(1, interactive ? "rgba(238, 235, 231, .52)" : "rgba(205, 49, 72, .38)");
+        tether.addColorStop(0, "rgba(42, 155, 226, 0)");
+        tether.addColorStop(1, interactive ? "rgba(255, 255, 255, .52)" : "rgba(111, 189, 238, .38)");
         context.beginPath();
         context.moveTo(follower.x, follower.y);
         context.lineTo(target.x, target.y);
@@ -145,7 +146,7 @@ function CursorExperience() {
         particle.vy *= 0.985;
         context.beginPath();
         context.arc(particle.x, particle.y, particle.size * particle.life, 0, Math.PI * 2);
-        context.fillStyle = `rgba(195, 44, 66, ${particle.life * 0.62})`;
+        context.fillStyle = `rgba(82, 171, 227, ${particle.life * 0.62})`;
         context.fill();
         return true;
       });
@@ -191,10 +192,13 @@ export function SiteShell({
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
-  const [themeTransition, setThemeTransition] = useState<Theme | null>(null);
-  const themeTimers = useRef<number[]>([]);
   const reduce = useReducedMotion();
-  const { locale, setLocale, theme, toggleTheme, t } = usePreferences();
+  const { locale, setLocale, t } = usePreferences();
+  const navLabel = (key: string) => ({
+    "nav.home": { pt: "Início", en: "Home", es: "Inicio" },
+    "nav.delivery": { pt: "Entrega", en: "Delivery", es: "Entrega" },
+    "nav.differences": { pt: "Diferenciais", en: "Why work with me", es: "Diferenciales" },
+  }[key]?.[locale] || t(key));
   const socialLinks = [
     ["GitHub", settings.github],
     ["Instagram", settings.instagram],
@@ -208,8 +212,6 @@ export function SiteShell({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => () => themeTimers.current.forEach((timer) => window.clearTimeout(timer)), []);
-
   useEffect(() => {
     if (!languageOpen) return;
     const closeLanguageMenu = (event: PointerEvent) => {
@@ -219,14 +221,6 @@ export function SiteShell({
     return () => window.removeEventListener("pointerdown", closeLanguageMenu);
   }, [languageOpen]);
 
-  function changeTheme() {
-    if (themeTransition) return;
-    const nextTheme = theme === "dark" ? "light" : "dark";
-    setThemeTransition(nextTheme);
-    themeTimers.current.push(window.setTimeout(toggleTheme, 720));
-    themeTimers.current.push(window.setTimeout(() => setThemeTransition(null), 1420));
-  }
-
   function changeLanguage(nextLocale: Locale) {
     setLocale(nextLocale);
     setLanguageOpen(false);
@@ -234,57 +228,12 @@ export function SiteShell({
 
   return (
     <div className={compact ? "site compact" : "site"}>
+      <SmoothScroll paused={menuOpen} />
       <div className="pointer-light" aria-hidden="true" />
       <CursorExperience />
-      <AnimatePresence>
-        {themeTransition && (
-          <motion.div
-            key={themeTransition}
-            className={`theme-cinematic is-${themeTransition}`}
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.34, ease: "easeOut" } }}
-            aria-hidden="true"
-          >
-            <motion.div
-              className="theme-cinematic-wipe"
-              initial={{ clipPath: "circle(0% at calc(100% - 121px) 48px)" }}
-              animate={{ clipPath: "circle(165% at calc(100% - 121px) 48px)" }}
-              transition={{ duration: 0.82, ease: [0.76, 0, 0.24, 1] }}
-            />
-            <div className="theme-cinematic-grid" />
-            <div className="theme-cinematic-panels">
-              {Array.from({ length: 7 }, (_, index) => (
-                <motion.i
-                  key={index}
-                  initial={{ scaleY: 0 }}
-                  animate={{ scaleY: 1 }}
-                  transition={{ duration: 0.66, delay: index * 0.045, ease: [0.76, 0, 0.24, 1] }}
-                />
-              ))}
-            </div>
-            <div className="theme-cinematic-orbits"><i /><i /><i /></div>
-            <motion.div
-              className="theme-cinematic-mark"
-              initial={{ opacity: 0, scale: 0.45, rotate: -32 }}
-              animate={{ opacity: [0, 1, 1, 0], scale: [0.45, 1, 1.04, 1.3], rotate: [-32, 0, 0, 12] }}
-              transition={{ duration: 1.38, times: [0, 0.27, 0.76, 1], ease: [0.16, 1, 0.3, 1] }}
-            >
-              <span className="theme-cinematic-logo" />
-              <p>{themeTransition === "light" ? "MODO CLARO" : "MODO ESCURO"}</p>
-              {themeTransition === "light" ? <Sun /> : <Moon />}
-            </motion.div>
-            <motion.div
-              className="theme-cinematic-line"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: [0, 1, 1, 0] }}
-              transition={{ duration: 1.35, times: [0, 0.32, 0.76, 1], ease: [0.76, 0, 0.24, 1] }}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
       <motion.header
         className={`site-nav ${scrolled ? "is-scrolled" : ""}`}
-        initial={{ opacity: 0, y: -24 }}
+        initial={false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       >
@@ -293,16 +242,13 @@ export function SiteShell({
         </Link>
         <nav className="desktop-nav" aria-label={t("nav.primary")}>
           {links.map((link) => (
-            <Link key={link.label} href={link.href}>{t(link.label)}</Link>
+            <Link key={link.label} href={link.href}>{navLabel(link.label)}</Link>
           ))}
           <Link className="nav-cta" href="/contact">
             {t("nav.talk")} <ArrowUpRight size={14} />
           </Link>
         </nav>
         <div className="site-preferences">
-          <button className="theme-toggle" type="button" onClick={changeTheme} aria-label={theme === "dark" ? t("a11y.lightTheme") : t("a11y.darkTheme")} title={theme === "dark" ? t("a11y.lightTheme") : t("a11y.darkTheme")} disabled={Boolean(themeTransition)}>
-            {theme === "dark" ? <Sun /> : <Moon />}
-          </button>
           <div className="language-picker">
             <button
               className="language-trigger"
@@ -375,7 +321,7 @@ export function SiteShell({
                 transition={{ delay: 0.16 + index * 0.07 }}
               >
                 <Link href={link.href} onClick={() => setMenuOpen(false)}>
-                  <span>0{index + 1}</span>{t(link.label)}
+                  <span>0{index + 1}</span>{navLabel(link.label)}
                 </Link>
               </motion.div>
             ))}
@@ -410,7 +356,7 @@ export function SiteShell({
             <p>{t("footer.navigation")}</p>
             {links.map((link, index) => (
               <Link key={link.label} href={link.href}>
-                <span>0{index + 1}</span>{t(link.label)}
+                <span>0{index + 1}</span>{navLabel(link.label)}
               </Link>
             ))}
           </div>
@@ -434,7 +380,7 @@ export function SiteShell({
         <div className="footer-signature">
           <span>© {new Date().getFullYear()} {settings.name}</span>
           <span>{t("footer.portfolio")}</span>
-          <button onClick={() => window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" })}>
+          <button onClick={() => window.dispatchEvent(new Event("jp:scroll-top"))}>
             {t("footer.top")} <ChevronUp />
           </button>
         </div>

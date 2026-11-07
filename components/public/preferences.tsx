@@ -187,8 +187,6 @@ const dictionaries: Record<Locale, Record<string, string>> = {
 type PreferencesValue = {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  theme: Theme;
-  toggleTheme: () => void;
   t: (key: string, replacements?: Record<string, string | number>) => string;
 };
 
@@ -196,23 +194,20 @@ const PreferencesContext = createContext<PreferencesValue | null>(null);
 
 export function PreferencesProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("pt");
-  const [theme, setTheme] = useState<Theme>("dark");
 
   useEffect(() => {
     const savedLocale = window.localStorage.getItem("jp-locale");
-    const savedTheme = window.localStorage.getItem("jp-theme");
     const restorePreferences = window.setTimeout(() => {
       if (savedLocale === "pt" || savedLocale === "en" || savedLocale === "es") setLocaleState(savedLocale);
-      if (savedTheme === "light" || savedTheme === "dark") setTheme(savedTheme);
     }, 0);
     return () => window.clearTimeout(restorePreferences);
   }, []);
 
   useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    document.documentElement.style.colorScheme = theme;
-    window.localStorage.setItem("jp-theme", theme);
-  }, [theme]);
+    document.documentElement.dataset.theme = "dark";
+    document.documentElement.style.colorScheme = "dark";
+    window.localStorage.removeItem("jp-theme");
+  }, []);
 
   useEffect(() => {
     const language = locale === "pt" ? "pt-BR" : locale === "es" ? "es" : "en";
@@ -223,8 +218,6 @@ export function PreferencesProvider({ children }: { children: React.ReactNode })
   const value = useMemo<PreferencesValue>(() => ({
     locale,
     setLocale: setLocaleState,
-    theme,
-    toggleTheme: () => setTheme((current) => current === "dark" ? "light" : "dark"),
     t: (key, replacements) => {
       let text = dictionaries[locale][key] ?? dictionaries.pt[key] ?? key;
       for (const [name, replacement] of Object.entries(replacements ?? {})) {
@@ -232,7 +225,7 @@ export function PreferencesProvider({ children }: { children: React.ReactNode })
       }
       return text;
     },
-  }), [locale, theme]);
+  }), [locale]);
 
   return <PreferencesContext.Provider value={value}>{children}</PreferencesContext.Provider>;
 }

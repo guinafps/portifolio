@@ -13,7 +13,7 @@ const principles = [["about.p1.title", "about.p1.text"], ["about.p2.title", "abo
 
 export default async function AboutPage() {
   const settings = await getSettings();
-  const portrait = settings.avatar && !settings.avatar.includes("avatars.githubusercontent.com") ? settings.avatar : "/joao-pedro.png";
+  const portrait = "/joao-pedro-formal.png";
 
   return (
     <SiteShell settings={settings} compact>

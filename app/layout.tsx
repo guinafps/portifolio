@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Manrope } from "next/font/google";
 import { headers } from "next/headers";
 import { PreferencesProvider } from "@/components/public/preferences";
 import "./globals.css";
+import "./portfolio-refresh.css";
+import "./reference-layout.css";
+import "lenis/dist/lenis.css";
+import "./cinematic.css";
 
 const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
 const mono = Geist_Mono({ variable: "--font-mono", subsets: ["latin"] });
+const manrope = Manrope({ variable: "--font-manrope", subsets: ["latin"], display: "swap" });
 
 export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = await headers();
@@ -37,10 +42,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="shortcut icon" href="/favicon-jp.png?v=20260816" type="image/png" />
         <link rel="apple-touch-icon" href="/favicon-jp.png?v=20260816" />
       </head>
-      <body className={`${geist.variable} ${mono.variable}`}>
+      <body className={`${geist.variable} ${mono.variable} ${manrope.variable}`}>
         <PreferencesProvider>{children}</PreferencesProvider>
       </body>
     </html>
   );
 }
-
