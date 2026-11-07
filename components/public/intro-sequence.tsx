@@ -8,27 +8,24 @@ export type IntroStage = "loading" | "transfer" | "done";
 type Frame = { left: number; top: number; width: number; height: number; x: number; y: number; scale: number };
 
 /** One portrait, two measured positions: loading screen -> actual hero image. */
-export function IntroSequence({ src, targetRef, onStageChange, fullMotion = false, onEnableMotion }: {
+export function IntroSequence({ src, targetRef, onStageChange }: {
   src: string;
   targetRef: RefObject<HTMLImageElement | null>;
   onStageChange: (stage: IntroStage) => void;
-  fullMotion?: boolean;
-  onEnableMotion: () => void;
 }) {
   const { locale } = usePreferences();
   const [stage, setStage] = useState<IntroStage>("loading");
   const [progress, setProgress] = useState(0);
   const [frame, setFrame] = useState<Frame | null>(null);
   const [photoReady, setPhotoReady] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
   const photo = useRef<HTMLImageElement>(null);
   const backdrop = useRef<HTMLDivElement>(null);
   const labels = useRef<HTMLDivElement>(null);
   const finishRef = useRef<() => void>(() => {});
   const words = {
-    pt: { loading: "Preparando a experiência", skip: "Pular abertura", ready: "Tudo pronto", enable: "Ativar animação completa", reduced: "Seu aparelho prefere menos movimento." },
-    en: { loading: "Preparing the experience", skip: "Skip intro", ready: "All set", enable: "Enable full animation", reduced: "Your device prefers reduced motion." },
-    es: { loading: "Preparando la experiencia", skip: "Saltar introducción", ready: "Todo listo", enable: "Activar animación completa", reduced: "Tu dispositivo prefiere menos movimiento." },
+    pt: { loading: "Preparando a experiência", skip: "Pular abertura", ready: "Tudo pronto" },
+    en: { loading: "Preparing the experience", skip: "Skip intro", ready: "All set" },
+    es: { loading: "Preparando la experiencia", skip: "Saltar introducción", ready: "Todo listo" },
   }[locale];
 
   useEffect(() => {
@@ -72,15 +69,12 @@ export function IntroSequence({ src, targetRef, onStageChange, fullMotion = fals
     };
     finishRef.current = finish;
 
-    // A visitor can explicitly opt in for this intro without changing device accessibility settings.
-    let optedIn = fullMotion;
-    try { optedIn ||= sessionStorage.getItem("jp-intro-full-motion") === "true"; } catch { /* Storage is optional. */ }
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches && !optedIn;
-    setReducedMotion(reduced);
-    root.dataset.introMotion = reduced ? "reduced" : "full";
+    // The owner explicitly requested the complete intro automatically. This does not
+    // change device preferences or reduced-motion handling elsewhere on the site.
+    root.dataset.introMotion = "full";
     const navigation = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
     const deepLink = location.hash && location.hash !== "#inicio";
-    if (!fullMotion && (deepLink || navigation?.type === "back_forward")) {
+    if (deepLink || navigation?.type === "back_forward") {
       finish();
       return () => { disposed = true; unlock(); };
     }
@@ -118,17 +112,6 @@ export function IntroSequence({ src, targetRef, onStageChange, fullMotion = fals
       const destination = measure();
       if (!destination || !photo.current || !backdrop.current) { finish(); return; }
       notify("transfer");
-      if (reduced) {
-        // Keep the name, photo and progress; replace the large zoom with a gentle dissolve.
-        if (labels.current) controls.push(animate(labels.current, { opacity: 0 }, { duration: .2, reduceMotion: false }));
-        controls.push(animate(photo.current, { opacity: 0 }, { duration: .25, reduceMotion: false }));
-        const dissolve = animate(backdrop.current, { opacity: 0 }, { duration: .4, reduceMotion: false });
-        controls.push(dissolve);
-        await dissolve.finished;
-        finish();
-        return;
-      }
-      // Full movement is either the system default or an explicit visitor choice.
       if (labels.current) controls.push(animate(labels.current, { opacity: 0, y: -20 }, { duration: .35, reduceMotion: false }));
       controls.push(animate(backdrop.current, { opacity: 0 }, { duration: 1.05, delay: .22, reduceMotion: false }));
       const travel = animate(photo.current, {
@@ -174,7 +157,7 @@ export function IntroSequence({ src, targetRef, onStageChange, fullMotion = fals
       delete root.dataset.intro;
       delete root.dataset.introMotion;
     };
-  }, [src, targetRef, onStageChange, fullMotion]);
+  }, [src, targetRef, onStageChange]);
 
   if (stage === "done") return null;
   return <div className={`jp-intro is-${stage}`} aria-label={words.loading} aria-busy={stage === "loading"}>
@@ -190,8 +173,7 @@ export function IntroSequence({ src, targetRef, onStageChange, fullMotion = fals
         <div className="jp-intro-track" role="progressbar" aria-label={words.loading} aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress}><i style={{ transform: `scaleX(${progress / 100})` }} /></div>
       </div>
       <button className="jp-intro-skip" onClick={() => finishRef.current()}>{words.skip}</button>
-      {reducedMotion && stage === "loading" && <div className="jp-intro-motion-choice"><span>{words.reduced}</span><button onClick={onEnableMotion}>{words.enable}</button></div>}
     </div>
-    <noscript><style>{`.jp-intro,.jp-intro-replay { display:none } .jp-reference[data-intro-stage="loading"] :is(.jp-hero-intro,.jp-hero-signature) { opacity:1 }`}</style></noscript>
+    <noscript><style>{`.jp-intro { display:none } .jp-reference[data-intro-stage="loading"] :is(.jp-hero-intro,.jp-hero-signature) { opacity:1 }`}</style></noscript>
   </div>;
 }

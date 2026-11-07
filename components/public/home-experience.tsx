@@ -2,7 +2,7 @@
 
 import Link from "@/components/ui/safe-link";
 import { useRef, useState } from "react";
-import { ArrowUpRight, Code2, Globe2, Layers3, MessageCircle, Fingerprint, Workflow, Play } from "lucide-react";
+import { ArrowUpRight, Code2, Globe2, Layers3, MessageCircle, Fingerprint, Workflow } from "lucide-react";
 import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import type { Project, SiteSettings } from "@/lib/portfolio";
@@ -23,7 +23,6 @@ export function HomeExperience({ projects, settings }: { projects: Project[]; se
   const r = referenceCopy[locale];
   const reduce = useReducedMotion();
   const [introStage, setIntroStage] = useState<IntroStage>("loading");
-  const [introRun, setIntroRun] = useState(0);
   const portraitRef = useRef<HTMLImageElement>(null);
   const showcaseRef = useRef<HTMLElement>(null);
   const { scrollYProgress: sceneProgress } = useScroll({ target: showcaseRef, offset: ["start end", "end start"] });
@@ -39,18 +38,11 @@ export function HomeExperience({ projects, settings }: { projects: Project[]; se
   const contact = settings.whatsapp || "/contact";
   const external = settings.whatsapp ? { target: "_blank", rel: "noreferrer" } : {};
   const portrait = "/joao-pedro-formal.png";
-  const replayIntro = () => {
-    try { sessionStorage.setItem("jp-intro-full-motion", "true"); } catch { /* The animation also works without storage. */ }
-    mouseX.set(0);
-    mouseY.set(0);
-    setIntroStage("loading");
-    setIntroRun(run => run + 1);
-  };
 
   const ContactButton = ({ dark = false }: { dark?: boolean }) => <a className={`jp-action${dark ? " jp-action-dark" : ""}`} href={contact} {...external}>{r.quote}<span><ArrowUpRight size={19} /></span></a>;
 
   return <SiteShell settings={settings}>
-    <IntroSequence key={introRun} src={portrait} targetRef={portraitRef} onStageChange={setIntroStage} fullMotion={introRun > 0} onEnableMotion={replayIntro} />
+    <IntroSequence src={portrait} targetRef={portraitRef} onStageChange={setIntroStage} />
     <a className="jp-skip-link" href="#conteudo">{locale === "en" ? "Skip to content" : locale === "es" ? "Ir al contenido" : "Pular para o conteúdo"}</a>
     <motion.div className="scroll-progress" style={{ scaleX }} aria-hidden="true" />
     <main className="jp-reference" id="conteudo" data-intro-stage={introStage}>
@@ -70,7 +62,6 @@ export function HomeExperience({ projects, settings }: { projects: Project[]; se
           <h1>{r.headline.map((line) => <span key={line}>{line}</span>)}</h1>
           <p className="jp-hero-description">{r.intro}</p>
           <div className="jp-hero-actions"><ContactButton /><Link className="jp-outline-action" href="#projetos">{r.projects}</Link></div>
-          <button className="jp-intro-replay" onClick={replayIntro}><Play size={11} aria-hidden="true" />{locale === "en" ? "Replay full intro" : locale === "es" ? "Repetir introducción completa" : "Rever abertura completa"}</button>
         </div>
         <div className="jp-hero-signature"><h2>{r.sideTitle.map((line) => <span key={line}>{line}</span>)}</h2><p>{r.sideText}</p></div>
       </section>
